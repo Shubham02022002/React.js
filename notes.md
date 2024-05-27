@@ -201,3 +201,58 @@ Again delete unwanted files which are:
     To run this project cd into the vite project and hit command:
         npm run dev
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+NOTE_3
+
+Javascript and html both are diffenent things with the help of script tags we inject our js code into the html and that is further responsible for manupulation. 
+
+Let's look into the folder structures of both the projects one by one. 
+    1. 01basicreact
+        - Inside the node_modules folder we'll get all the depndencies which are inside our package.json file. 
+        - .gitignore tell us which files you want to push on git    
+        - package-lock.json also tells us about the dependencies but locks the versions of these dependencies.
+        - README.md is a markdown file which tells about the react project
+        Inside public folder we have bunch of files important one are:
+        - manifest.json requires when the web app is opened in mobile phones some meta tags are taken from here. 
+        - robots.txt is used for search engine. 
+        - index.html (Most important)
+            - this is the html page which loads when we run the project and it is a SPA(single page application).
+            Remove all the comments to see actual contents of the file. 
+            Now we are having a <noscript> tag which show message if javascript is not enabled in the browser. 
+            Next thing in the body we have a <div> with id="root" notice not a single line of js is here. 
+            In the src folder:
+            Entry point of React is index.js (you can also change its name doesn't matter)
+            In index.js we have something called root and we have some imports also which are:
+            1. React library which is core foundational library. 
+            2. ReactDOM is the implimentation of react in web.
+            React creates its own DOM which is also known as VDOM(virtual DOM) and then it compares it with the main DOM and finds the diff and render only the diff(uses diff algorithms behind this).
+            createRoot is a method of ReactDOM in this we pass a html element with id "root" and we store that reference in the variable root.
+            Now root.render is rendering the <App/> with react strict mode, but we don't have any tag named App. 
+            React gives us this power of JSX by which we can render our html elements through javascript also there is no diffrence between html tags and <App/>
+            If you remove the <React.strictMode> you can, this is safe mode of react which is useful for the development purpose so that you can do some optimizations. 
+            What is this App?
+            - App is nothing but a function which is returning some html.
+            This is actually very powerful stuff that we can write html code insde javascript and can render that as well. 
+            ! Questions which comes to mind are ?
+            1. In the index.html file we haven't loaded the js so how this index.js is automatically loaded ?
+            - To answer this go into the package.json file here we can see in dependencies we have someting react-scripts. If you inspet the page you will find scripts are loaded in the html.
+
+    2. 01vitereact
+        - Inside package.json in the dependencies we don't have any react-scripts. But if we check index.html  we have the script tag inside the body.
+        In the main.jsx we are basically doing the same thing as in index.js of 01basicreact.
+        There is noting diffrent but this is light-weight as here we don't have testing libraies and other additional scripts. 
+        ! Question arises..
+        If App is a simple function which is returning some html and we had given this function to main.jsx to render can we do inside the app ? 
+        - Yes, we can do this. 
+        In the src folder create a new file let say xyz.js inside this file create a function and reutrn some html from it and do export default of function. 
+        Now inside the app.jsx in the return statement use that function name as a html tag, also import that function.
+        This will give a error of invalid js syntax so change the extension of the file to .jsx 
+        Remember whenever you are making a component use jsx, to render a component in react it should be started with a capital letter and should be exported as same. 
+        In the app.jsx if you try to write some html code inside return statement it will through an error that Adjacent JSX elements must be wrapped in an enclosing tag. 
+        Solutions to this can be use a div to wrap everthing, use a empty tag <> and enclose things inside them. 
+        These are called fragments in React.
+
+    Again we move to 01basicreact
+        - Inside the src folder create a new file xyz.js and create a function which returns html export it, inside the app.js import this function and insert the name of the function inside a tag in the return statement after using react fragments. 
+        Don't forget to use captial letter in the function names.
+        It's a good practice that file name of components are also starts with capital letter. 
