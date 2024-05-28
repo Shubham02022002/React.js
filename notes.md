@@ -256,3 +256,33 @@ Let's look into the folder structures of both the projects one by one.
         - Inside the src folder create a new file xyz.js and create a function which returns html export it, inside the app.js import this function and insert the name of the function inside a tag in the return statement after using react fragments. 
         Don't forget to use captial letter in the function names.
         It's a good practice that file name of components are also starts with capital letter. 
+
+///////////////////////////////////////////////////////////////////////////////
+NOTE_4
+
+Now we'll try to create our own react app and sort of understand whats going under the hood.
+1. Create a folder in main folder. 
+2. Inside this folder create a index.html file and setup the basic boiler plate code by hitting ! and enter.
+3. In the body create a div with id=root and add a script with src customreact.js and also create a customreact.js file inside customReact folder.
+4. In customreact.js grab that div with id root inside a variable (mainContainer), now suppose we need to render something let say <a> tag. For this we had to create an element by doing this we get to know how the react sees the returned function in which html is present. React try to create a tree out of elmements. First thing we need to pass in this element is the type (what is the type of element eg. div,a,p,h1,etc.) we have to give the type in key:value pair lets say we give type:'a', second is props which tell us about the properties of the (type element) this prop is a object in itself so attributes to a tag are href so give it href with a value for eg.
+href:"http://google.com", give target:"_blank" (open the page in new tab), after props we have childern which basically tells us about the content of the main element which we have created so far. React does the same thing under the hood.
+5. Now we want a function which renders this element inside the div. Lets create it give it a name (customRender)
+parameters to this customRender are (what it need to render, where it should be inserted). After this we have to create a dom element and after that we'll inject it. As while creating the reactElement we have already given keys to the element by the help of these key:value pari we can easily create the domElement. 
+Code:
+```javascript
+    const domElement=document.createElement(reactElement.type);
+    domElement.innerHTML=reactElement.children;
+    domElement.setAttribute('href',reactElement.props.href)
+    domElement.setAttribute('target',reactElement.props.target)
+```
+Now in the container append the child which is domElement. But by doing this we have to write more lines of code which is not a good thing. But we'll be creating other versions of the same code which will be better from this. 
+Now look we have 2 attributes for the <a> tag and we had written 2 lines of code what if we have more attributes with more number of elements ? So we're going to change the code to:
+```javascript
+    const domElement=doucument.createElement(reactElement.type);
+    domElement.innerHTML=reactElement.children;
+    for(const prop in reactElement.props){
+        if(prop==children)continue;
+        domElement.setAttribute(prop,reactElement.props[prop])
+    }
+    container.appendChild(domElement)
+```
