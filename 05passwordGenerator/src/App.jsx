@@ -7,6 +7,7 @@ function App() {
   const [includeChar, setIncludeChar] = useState(false);
   const [password, setPassword] = useState("");
   const [copied, setCopied] = useState("Copy");
+  const [prevPasswords, setPrevPasswords] = useState([]);
   const passwordRef = useRef(null);
 
   const passwordGenerator = useCallback(() => {
@@ -19,7 +20,9 @@ function App() {
       let char = Math.floor(Math.random() * str.length + 1);
       code += str.charAt(char);
     }
+    setPrevPasswords((prev) => [...prev, code]);
     setPassword(code);
+    console.log(prevPasswords);
     setCopied("Copy");
   }, [length, includeChar, includeNum, setPassword]);
 
@@ -29,6 +32,12 @@ function App() {
     window.navigator.clipboard.writeText(password);
     setCopied("Copied!");
   }, [password]);
+
+  // useEffect(() => {
+  //   if (password) {
+  //     setPrevPasswords((prev) => [...prev, password]);
+  //   }
+  // }, [password]);
   useEffect(() => {
     passwordGenerator();
   }, [length, includeNum, includeChar, passwordGenerator]);
@@ -93,6 +102,17 @@ function App() {
           </div>
         </div>
       </div>
+      <h1 className="text-orange-500 w-ful text-center">Previous Passwords</h1>
+      <div
+        className="w-full max-w-md mx-auto shadow-md overflow-x-auto text-center
+       rounded-lg px-4 py-3 my-8 text-orange-500 bg-gray-700"
+      >
+        {prevPasswords.map((prevPassword, index) => (
+          <div className="w-full max-w-md mx-auto shadow-md text-center overflow-x-auto
+          rounded-lg px-4 py-3 my-8 text-orange-500 bg-white" key={index}>{prevPassword}</div>
+        ))}
+      </div>
+      
     </>
   );
 }
